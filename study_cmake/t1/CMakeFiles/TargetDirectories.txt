@@ -1,0 +1,3 @@
+/home/colby/work300GB/cbx-study/study_cmake/t1/CMakeFiles/edit_cache.dir
+/home/colby/work300GB/cbx-study/study_cmake/t1/CMakeFiles/rebuild_cache.dir
+/home/colby/work300GB/cbx-study/study_cmake/t1/CMakeFiles/HELLO.dir
