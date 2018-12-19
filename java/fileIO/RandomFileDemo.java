@@ -29,8 +29,7 @@ public class RandomFileDemo{
             String str = "" ;
     
             for( int i = 0; i < len; i++){
-                str += (char)raf.readByte() ;
-                System.out.println(str);
+                str = str + raf.readByte() ;
             }
     
             System.out.println("name :" + str);
@@ -42,7 +41,7 @@ public class RandomFileDemo{
             str = "" ;
     
             for( int i = 0; i < len; i++){
-                str += (char)raf.readByte() ;
+                str = str +  (char)raf.readByte() ;
             }
     
             System.out.println("name :" + str);
@@ -54,7 +53,7 @@ public class RandomFileDemo{
             str = "" ;
     
             for( int i = 0; i < len; i++){
-                str += (char)raf.readByte() ;
+                str = str + raf.readByte() ;
             }
     
             System.out.println("name :" + str);

@@ -12,7 +12,7 @@
 #define UPLOAD_FILE_NAME "upload.zip"
 #define UPLOAD_FILE_BUFF 512
 
-extern int upload(int client_fd) ;
+extern int upload(int client_fd, long file_size) ;
 
 
 #endif

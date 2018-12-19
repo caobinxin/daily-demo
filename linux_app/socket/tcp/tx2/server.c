@@ -78,7 +78,9 @@ int main(int argc, const char *argv[])
 	while(1)
 	{
 		len = sizeof(clt_addr) ;
+		printf_run("等待客户端连接...\n") ;
 		com_fd = accept( listen_fd, (struct sockaddr*)&clt_addr, &len) ;
+		printf_run("有新的客户端连接请求...\n") ;
 		if( com_fd < 0)
 		{
 			if( EINTR == errno)
@@ -116,27 +118,30 @@ void handle_child_process(int client_fd)
 	while(1)
 	{
 		len = read(client_fd, cmd_buf, CMD_BUF_SIZE);
+
 		printf(" [client-%d]\n\t\trecv_buf_len=%d\n\t\trecv_buf=%s\n", getpid(),len, cmd_buf) ;
 
 		if( '@' == cmd_buf[0]) break ;
 		
-
+		int client_type = CLIENT_TYPE_DEFAULT ;
 		if(0 == strncmp(cmd_buf, CMD_UPLOAD, strlen(CMD_UPLOAD)))
 		{
-			printf_run(" upload \n") ;
-			cmd_respond( client_fd,SUCCESSED);
-			upload(client_fd) ;
-			break;
+			client_type = CLIENT_TYPE_UPLOAD;
 		}else{
-			printf_warn(" unknown command. close client_fd .\n") ;
+			printf_warn(" unknown client type will close client_fd !\n") ;
 			break;
 		}
 
-		// int ret = upload(client_fd) ;
-		// if( 0 == ret){
-		// 	printf_run(" 上传成功!!!");
-		// 	break;
-		// }
+		switch(client_type)
+		{
+			case CLIENT_TYPE_UPLOAD:
+				upload_client(client_fd) ;
+				break;
+			default:
+				break;
+		}
+
+		break;
 
 	}
 	return ;
@@ -153,4 +158,39 @@ int cmd_respond(int client_fd, char* mm){
 	printf_run(mm) ;
 
 	return 0 ;
+}
+
+int upload_client(int client_fd)
+{
+	printf_run(" 文件上传客户端登录成功! \n") ;
+
+	long file_size = inquiry_upload_file_size(client_fd) ;
+	
+	cmd_respond( client_fd,SEV_READYED_RECEIVE_FILE);
+	int success = upload(client_fd, file_size) ;
+	if( 0 == success){
+		printf_run(" 上传成功!!!");
+		return 0 ;
+	
+	}else{
+		printf_error(" 上传失败!!!") ;
+		return -1 ;
+	}
+}
+
+long inquiry_upload_file_size(int client_fd)
+{
+	long file_size = 0 ;
+	char buf[16] = {0} ;
+	int len = 0 ;
+
+	cmd_respond( client_fd,SEV_INQUIRY_UPLOAD_FILE_SIZE);
+	len = read(client_fd, buf, 16);
+	printf_run("上传的文件大小为：") ;
+	printf_run(buf) ;
+
+	file_size = atol(buf) ;
+	printf("%ld\n", file_size) ;
+
+	return file_size ;
 }
