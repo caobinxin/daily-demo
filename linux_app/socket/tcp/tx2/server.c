@@ -8,22 +8,8 @@
 #include <sys/wait.h>
 #include <netdb.h>
 #include "server.h"
-#include "upload.h"
+#include "upload_client.h"
 #include "debug.h"
-
-void sig_handler( int signo)
-{
-	pid_t pid ;
-	int stat ;
-
-	pid = waitpid( -1, &stat, WNOHANG) ;
-	while( pid > 0)
-	{
-		printf("child process terminated (PID:%ld)\n", (long) getpid()) ;
-		pid = waitpid( -1, &stat, WNOHANG) ;
-	}
-	return ;
-}
 
 int main(int argc, const char *argv[])
 {
@@ -40,6 +26,10 @@ int main(int argc, const char *argv[])
 	struct sockaddr_in srv_addr ;
 
 	port = POST ;
+
+	chdir(ROOT_DIR) ;
+	
+	printf("服务端进程：%d\n", getpid()) ;
 
 	if( signal( SIGCHLD, sig_handler) < 0)
 	{
@@ -147,50 +137,16 @@ void handle_child_process(int client_fd)
 	return ;
 }
 
-int cmd_respond(int client_fd, char* mm){
-	if( (0 >= client_fd) || (NULL == mm))
+void sig_handler( int signo)
+{
+	pid_t pid ;
+	int stat ;
+
+	pid = waitpid( -1, &stat, WNOHANG) ;
+	while( pid > 0)
 	{
-		printf_error(" client_fd error,or mm == NULL not cmd_respond...exit,") ;
-		return -1 ;
+		printf("child process terminated (PID:%ld)\n", (long) getpid()) ;
+		pid = waitpid( -1, &stat, WNOHANG) ;
 	}
-
-	write(client_fd, mm, strlen(mm)) ;
-	printf_run(mm) ;
-
-	return 0 ;
-}
-
-int upload_client(int client_fd)
-{
-	printf_run(" 文件上传客户端登录成功! \n") ;
-
-	long file_size = inquiry_upload_file_size(client_fd) ;
-	
-	cmd_respond( client_fd,SEV_READYED_RECEIVE_FILE);
-	int success = upload(client_fd, file_size) ;
-	if( 0 == success){
-		printf_run(" 上传成功!!!");
-		return 0 ;
-	
-	}else{
-		printf_error(" 上传失败!!!") ;
-		return -1 ;
-	}
-}
-
-long inquiry_upload_file_size(int client_fd)
-{
-	long file_size = 0 ;
-	char buf[16] = {0} ;
-	int len = 0 ;
-
-	cmd_respond( client_fd,SEV_INQUIRY_UPLOAD_FILE_SIZE);
-	len = read(client_fd, buf, 16);
-	printf_run("上传的文件大小为：") ;
-	printf_run(buf) ;
-
-	file_size = atol(buf) ;
-	printf("%ld\n", file_size) ;
-
-	return file_size ;
+	return ;
 }
