@@ -7,6 +7,15 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 # include <stdlib.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <errno.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <netdb.h>
+
+#include "upload_client.h"
+#include "debug.h"
 
 #define POST 3333
 

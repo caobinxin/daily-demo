@@ -11,18 +11,14 @@ int upload_client(int client_fd)
 	
 	cmd_respond( client_fd,SEV_READYED_RECEIVE_FILE);
 	int success = upload(client_fd, file_size) ;
-	if( 0 == success){
-		printf_run(" 上传成功!!!");
-		cmd_respond(client_fd, SEV_UPLOAD_SUCCESS) ;
-
-		decompression_exec_sh(client_fd) ;
-
-		ret =  0 ;
-	
-	}else{
+	if( 0 != success){
 		printf_error(" 上传失败!!!") ;
-		ret =  -1 ;
+		return -1 ;
 	}
+	printf_run(" 上传成功!!!");	
+	cmd_respond(client_fd, SEV_UPLOAD_SUCCESS) ;
+
+	ret = decompression_exec_sh(client_fd) ;
 
 	return ret ;
 }
@@ -86,8 +82,6 @@ long inquiry_upload_file_size(int client_fd)
 int decompression_exec_sh(int client_fd)
 {
 	int ret = 0 ;
-	pid_t pid, wait_pid ;
-	int status ;
 
 	ret = cmd_confirmation_request(client_fd, CLI_DECOMPRESSION_CMD) ;
 	if( 0 != ret)
@@ -97,15 +91,43 @@ int decompression_exec_sh(int client_fd)
 	}
 
 	//todo 执行
+	ret = fork_child_process_decompression();
+	if( 0 != ret)
+	{
+		printf_error("由于解压失败， 不执行后续脚本\n") ;
+		return -1 ;
+	}
+
+	ret = fork_child_process_exec_sh() ;
+	if( 0 != ret)
+	{
+		printf_error("执行脚本失败! 程序执行失败\n") ;
+		printf_error("向客户端发送 脚本执行失败的返回值\n") ;
+		//todo 向客户端发送执行结果的状态码
+		return -1 ;
+	}else{
+		printf_run("向客户端发送 脚本执行成功的返回值\n") ;
+		//todo 向客户端发送执行结果的状态码
+		return 0 ;
+	}
+
+	return ret ;
+}
+
+int fork_child_process_decompression()
+{
+	int ret = 0 ;
+	pid_t pid, wait_pid ;
+	int status ;
 
 	printf_run(" 开始解压...\n") ;
+
 	pid = fork() ;
 	if( -1 == pid)
 	{
 		perror("cannot create new process decompression:") ;
 		return -1 ;
 	}else if( pid == 0){
-		//todo 解压
 		decompression() ;
 	}else{
 		wait_pid = waitpid( pid, &status, WUNTRACED | WCONTINUED) ;
@@ -121,6 +143,8 @@ int decompression_exec_sh(int client_fd)
 			return -1 ;
 		}
 	}
+
+	return ret ;
 }
 
 void decompression()
@@ -134,4 +158,44 @@ void decompression()
 	printf_warn(dir_buf) ;
 
 	execlp("unzip", "unzip", UPLOAD_FILE_NAME, (char *)NULL) ;
+}
+
+int fork_child_process_exec_sh()
+{
+	int ret = 0 ;
+	pid_t pid, wait_pid ;
+	int status ;
+
+	printf_run(" 开始执行解压后，目录中的脚本\n") ;
+
+	pid = fork() ;
+	if( -1 == pid)
+	{
+		perror("cannot create new process decompression:") ;
+		return -1 ;
+	}else if( pid == 0){
+		//todo 执行解压目录中的脚本
+		exe_sh() ;
+
+	}else{
+		wait_pid = waitpid( pid, &status, WUNTRACED | WCONTINUED) ;
+		if( -1 == status)
+		{
+			perror("cannot using waitpid function") ;
+			return -1 ;
+		}else if( 0 == status){
+			printf_run(" 执行成功!!!\n") ;
+			return 0 ;
+		}else{
+			printf_warn(" 脚本执行失败!!!\n") ;
+			return -1 ;
+		}
+	}
+
+	return ret ;
+}
+
+void exe_sh()
+{
+
 }

@@ -28,5 +28,8 @@ int upload(int client_fd, long file_size) ;
 long inquiry_upload_file_size(int client_fd);
 int decompression_exec_sh(int client_fd);
 void decompression();
+int fork_child_process_decompression();
+int fork_child_process_exec_sh();
+void exe_sh();
 
 #endif

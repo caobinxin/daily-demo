@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <errno.h>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/wait.h>
-#include <netdb.h>
 #include "server.h"
-#include "upload_client.h"
-#include "debug.h"
 
 int main(int argc, const char *argv[])
 {
