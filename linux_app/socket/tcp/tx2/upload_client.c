@@ -147,19 +147,6 @@ int fork_child_process_decompression()
 	return ret ;
 }
 
-void decompression()
-{
-	int ret ;
-	char dir_buf[128] = {0} ;
-
-	getcwd(dir_buf, 128) ;
-
-	printf_run(" 当前解压目录：\n") ;
-	printf_warn(dir_buf) ;
-
-	execlp("unzip", "unzip", UPLOAD_FILE_NAME, (char *)NULL) ;
-}
-
 int fork_child_process_exec_sh()
 {
 	int ret = 0 ;
@@ -193,6 +180,19 @@ int fork_child_process_exec_sh()
 	}
 
 	return ret ;
+}
+
+void decompression()
+{
+	int ret ;
+	char dir_buf[128] = {0} ;
+
+	getcwd(dir_buf, 128) ;
+
+	printf_run(" 当前解压目录：\n") ;
+	printf_warn(dir_buf) ;
+
+	execlp("unzip", "unzip", UPLOAD_FILE_NAME, (char *)NULL) ;
 }
 
 void exe_sh()

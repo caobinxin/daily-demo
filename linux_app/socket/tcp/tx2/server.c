@@ -16,7 +16,7 @@ int main(int argc, const char *argv[])
 
 	port = POST ;
 
-	chdir(ROOT_DIR) ;
+	chdir(WS_ROOT_DIR) ;
 	
 	printf("服务端进程：%d\n", getpid()) ;
 
