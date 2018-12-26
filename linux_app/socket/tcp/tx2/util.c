@@ -9,6 +9,7 @@ int cmd_respond(int client_fd, char* mm)
 	}
 
 	write(client_fd, mm, strlen(mm)) ;
+	
 	printf_run(mm) ;
 
 	return 0 ;

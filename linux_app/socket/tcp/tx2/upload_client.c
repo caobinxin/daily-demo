@@ -166,6 +166,7 @@ int fork_child_process_exec_sh()
 
 	}else{
 		wait_pid = waitpid( pid, &status, WUNTRACED | WCONTINUED) ;
+		printf_run("脚本执行结束：返回的值\n") ;
 		if( -1 == status)
 		{
 			perror("cannot using waitpid function") ;
@@ -197,5 +198,12 @@ void decompression()
 
 void exe_sh()
 {
+	char dir_buf[128] = {0} ;
+	getcwd(dir_buf, 128) ;
 
+	char exe_sh_path[128] = {0} ;
+	snprintf(exe_sh_path, sizeof(exe_sh_path), "%s/%s/%s", dir_buf,"myntai", "test.sh" ) ;
+	printf_run(exe_sh_path) ;
+
+	execlp("bash", "bash", exe_sh_path, (char *)NULL) ;
 }

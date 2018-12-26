@@ -13,8 +13,10 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <netdb.h>
+#include <unistd.h>
 
 #include "upload_client.h"
+#include "version_client.h"
 #include "debug.h"
 
 #define POST 3333
@@ -26,6 +28,9 @@
 
 #define CLIENT_TYPE_DEFAULT 0
 #define CLIENT_TYPE_UPLOAD 1
+#define CLIENT_TYPE_VERSION 2
+
+#define END_OF_COMMUNICATION "end_of_communication\n"
 
 extern void handle_child_process(int client_fd);
 void sig_handler( int signo);

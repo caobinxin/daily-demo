@@ -2,6 +2,8 @@
     "files.associations": {
         "server.h": "c",
         "debug.h": "c",
-        "upload.h": "c"
+        "upload.h": "c",
+        "version_client.h": "c",
+        "stdlib.h": "c"
     }
 }

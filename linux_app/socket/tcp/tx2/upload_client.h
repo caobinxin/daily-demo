@@ -12,6 +12,8 @@
 #include "util.h"
 
 #define CMD_UPLOAD "cmd_upload"
+#define CMD_VERSION "cmd_version"
+
 #define UPLOAD_ROOT_DIR "./"
 #define UPLOAD_SAVE_DIR ""
 #define UPLOAD_FILE_NAME "upload.zip"

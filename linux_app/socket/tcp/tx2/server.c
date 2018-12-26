@@ -106,23 +106,36 @@ void handle_child_process(int client_fd)
 		if(0 == strncmp(cmd_buf, CMD_UPLOAD, strlen(CMD_UPLOAD)))
 		{
 			client_type = CLIENT_TYPE_UPLOAD;
+		}else if( 0 == strncmp(cmd_buf, CMD_VERSION, strlen(CMD_VERSION))){
+			client_type = CLIENT_TYPE_VERSION;
 		}else{
 			printf_warn(" unknown client type will close client_fd !\n") ;
 			break;
 		}
+
+		memset( cmd_buf, 0, CMD_BUF_SIZE) ;
 
 		switch(client_type)
 		{
 			case CLIENT_TYPE_UPLOAD:
 				upload_client(client_fd) ;
 				break;
+
+			case CLIENT_TYPE_VERSION:
+				version_client(client_fd) ;
+				break;
 			default:
+				goto default_client ;
+				printf_warn("goto default_client\n") ;
 				break;
 		}
 
-		break;
+		cmd_respond(client_fd, END_OF_COMMUNICATION) ;
 
 	}
+default_client:
+	printf_warn("结束子进程处理\n") ;
+
 	return ;
 }
 

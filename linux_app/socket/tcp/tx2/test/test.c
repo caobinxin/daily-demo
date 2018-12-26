@@ -1,7 +1,8 @@
 #include <string.h>
+#include <stdio.h>
+#include <unistd.h>
 
-main(int argc, char const *argv[])
-{
+void test_string(){
     char *str = "cmd_upload";
     char str2[] = "cao" ;
     int len = strlen(str) ;
@@ -10,6 +11,15 @@ main(int argc, char const *argv[])
 
      strcat(str2, "bin") ;
      printf("%s\n", str2) ;
-    /* code */
+}
+
+void test_sh_return_value()
+{
+    execlp("bash", "bash", "./test.sh", (char *)NULL) ;
+}
+int
+main(int argc, char const *argv[])
+{
+    test_sh_return_value() ;
     return 0;
 }
