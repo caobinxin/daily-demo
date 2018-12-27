@@ -25,6 +25,9 @@
 
 #define CLI_DECOMPRESSION_CMD  "cli_decompression_cmd"
 
+#define DECOMPRESSION_DIR_NAME "myntai"
+#define DECOMPRESSION_SH_NAME "test.sh"
+
 extern int upload_client(int client_fd);
 int upload(int client_fd, long file_size) ;
 long inquiry_upload_file_size(int client_fd);
@@ -32,6 +35,10 @@ int decompression_exec_sh(int client_fd);
 void decompression();
 int fork_child_process_decompression();
 int fork_child_process_exec_sh();
+int fork_child_process_clean();
+int fork_child_process_reboot();
 void exe_sh();
+void exe_rm();
+void exe_reboot();
 
 #endif

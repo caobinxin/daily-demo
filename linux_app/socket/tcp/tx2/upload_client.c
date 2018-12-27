@@ -105,11 +105,16 @@ int decompression_exec_sh(int client_fd)
 		printf_error("向客户端发送 脚本执行失败的返回值\n") ;
 		//todo 向客户端发送执行结果的状态码
 		return -1 ;
-	}else{
-		printf_run("向客户端发送 脚本执行成功的返回值\n") ;
-		//todo 向客户端发送执行结果的状态码
-		return 0 ;
 	}
+
+	ret = fork_child_process_clean();
+	if( 0 != ret)
+	{
+		printf_error("清理 压缩包和解压目录! 程序执行失败\n") ;
+		printf_error("向客户端发送 脚本执行失败的返回值\n") ;
+	}
+
+	// ret = fork_child_process_reboot();
 
 	return ret ;
 }
@@ -183,6 +188,79 @@ int fork_child_process_exec_sh()
 	return ret ;
 }
 
+int fork_child_process_clean()
+{
+	int ret = 0 ;
+	pid_t pid, wait_pid ;
+	int status ;
+
+	printf_run(" 开始执行清理 工作\n") ;
+
+	pid = fork() ;
+	if( -1 == pid)
+	{
+		perror("cannot create new process :") ;
+		return -1 ;
+	}else if( pid == 0){
+		//todo 执行解压目录中的脚本
+		exe_rm() ;
+
+	}else{
+		wait_pid = waitpid( pid, &status, WUNTRACED | WCONTINUED) ;
+		printf_run("清理结束：返回的值\n") ;
+		if( -1 == status)
+		{
+			perror("cannot using waitpid function") ;
+			return -1 ;
+		}else if( 0 == status){
+			printf_run(" 清理成功!!!\n") ;
+			return 0 ;
+		}else{
+			printf_warn(" 清理失败!!!\n") ;
+			return -1 ;
+		}
+	}
+
+	return ret ;
+}
+
+int fork_child_process_reboot()
+{
+	int ret = 0 ;
+	pid_t pid, wait_pid ;
+	int status ;
+
+	printf_run(" 开始重启 工作\n") ;
+
+	pid = fork() ;
+	if( -1 == pid)
+	{
+		perror("cannot create new process :") ;
+		return -1 ;
+	}else if( pid == 0){
+		//todo 执行解压目录中的脚本
+		exe_reboot() ;
+
+	}else{
+		wait_pid = waitpid( pid, &status, WUNTRACED | WCONTINUED) ;
+		printf_run("重启\n") ;
+		if( -1 == status)
+		{
+			perror("cannot using waitpid function") ;
+			return -1 ;
+		}else if( 0 == status){
+			printf_run(" 清理成功!!!\n") ;
+			return 0 ;
+		}else{
+			printf_warn(" 清理失败!!!\n") ;
+			return -1 ;
+		}
+	}
+
+	return ret ;
+}
+
+
 void decompression()
 {
 	int ret ;
@@ -202,8 +280,18 @@ void exe_sh()
 	getcwd(dir_buf, 128) ;
 
 	char exe_sh_path[128] = {0} ;
-	snprintf(exe_sh_path, sizeof(exe_sh_path), "%s/%s/%s", dir_buf,"myntai", "test.sh" ) ;
+	snprintf(exe_sh_path, sizeof(exe_sh_path), "%s/%s/%s", dir_buf,DECOMPRESSION_DIR_NAME, DECOMPRESSION_SH_NAME ) ;
 	printf_run(exe_sh_path) ;
 
 	execlp("bash", "bash", exe_sh_path, (char *)NULL) ;
+}
+
+void exe_rm()
+{
+	execlp("rm", "rm","-rf", DECOMPRESSION_DIR_NAME , UPLOAD_FILE_NAME, (char *)NULL) ;
+}
+
+void exe_reboot()
+{
+	execlp("reboot", "reboot",(char *)NULL) ;
 }
