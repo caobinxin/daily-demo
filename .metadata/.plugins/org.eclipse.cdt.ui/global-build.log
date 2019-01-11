@@ -1,0 +1,101 @@
+15:02:44 **** Build of configuration Default for project lab1_result ****
+make all 
++ cc kern/init/init.c
++ cc kern/libs/stdio.c
++ cc kern/libs/readline.c
++ cc kern/debug/panic.c
+kern/debug/panic.c: In function ‘__panic’:
+kern/debug/panic.c:27:5: warning: implicit declaration of function ‘print_stackframe’ [-Wimplicit-function-declaration]
+     print_stackframe();
+     ^
++ cc kern/debug/kdebug.c
++ cc kern/debug/kmonitor.c
++ cc kern/driver/clock.c
++ cc kern/driver/console.c
++ cc kern/driver/picirq.c
++ cc kern/driver/intr.c
++ cc kern/trap/trap.c
++ cc kern/trap/vectors.S
++ cc kern/trap/trapentry.S
++ cc kern/mm/pmm.c
++ cc libs/string.c
++ cc libs/printfmt.c
++ ld bin/kernel
++ cc boot/bootasm.S
++ cc boot/bootmain.c
++ cc tools/sign.c
++ ld bin/bootblock
+'obj/bootblock.out' size: 500 bytes
+build 512 bytes boot sector: 'bin/bootblock' success!
+记录了10000+0 的读入
+记录了10000+0 的写出
+5120000 bytes (5.1 MB, 4.9 MiB) copied, 0.0216469 s, 237 MB/s
+记录了1+0 的读入
+记录了1+0 的写出
+512 bytes copied, 0.000114246 s, 4.5 MB/s
+记录了146+1 的读入
+记录了146+1 的写出
+74880 bytes (75 kB, 73 KiB) copied, 0.000371946 s, 201 MB/s
+15:06:14 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:12:23 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:12:36 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:12:41 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:12:54 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:15:11 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:15:30 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:16:00 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:16:49 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:17:14 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:17:22 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:17:27 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:18:19 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:18:45 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:24:04 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:25:07 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:29:59 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:30:12 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:33:57 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:38:09 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
+15:42:51 **** Incremental Build of configuration Default for project lab1_result ****
+make all 
+make: Nothing to be done for 'all'.
