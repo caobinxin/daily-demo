@@ -4,6 +4,13 @@
         "debug.h": "c",
         "upload.h": "c",
         "version_client.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "atomic.h": "c",
+        "uaccess.h": "c",
+        "aio.h": "c",
+        "module.h": "c",
+        "proc_fs.h": "c",
+        "hellojni.h": "c",
+        "ratio": "cpp"
     }
 }
