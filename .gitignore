@@ -1,2 +1,9 @@
 ./os/*
 linux-kernel/linux-4.13.1.tar.gz
+android/TestSelfService 
+
+android/android_apps 
+android/marvin-client-guardian 
+gitbook/staruml-gitbook 
+java/rosjava_actionlib 
+java/rosjava_build_tools
